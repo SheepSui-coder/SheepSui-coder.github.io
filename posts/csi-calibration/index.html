@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 105%">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <meta name="author" content="Sheep Sui">
+
+  
+  
+  <meta name="description" content="关于CSI矫正的原理与方法">
+  
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="https://sheepsui-coder.github.io//images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://sheepsui-coder.github.io//images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://sheepsui-coder.github.io//images/favicon-16x16.png">
+
+  
+  
+  <meta name="keywords" content='hugo latex theme blog texify texify2 texify3 michael neuper'>
+  
+
+  
+  
+  <link rel="stylesheet" href='/katex/katex.min.css'>
+<script defer defer src='/katex/katex.min.js'></script>
+<script defer src='/katex/contrib/auto-render.min.js'></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError : false
+        });
+    });
+</script>
+  
+
+  
+    <script async data-name="BMC-Widget" 
+        data-cfasync="true" 
+        src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" 
+        data-id="michaelneuper" 
+        data-description="Like what I do? Buy me a coffee!" 
+        data-message="" 
+        data-color="#d79921" 
+        data-position="Right" 
+        data-x_margin="18" 
+        data-y_margin="18"
+        crossorigin="anonymous">
+  </script>
+  
+
+  
+  <meta property="og:title" content="CSI Calibration" />
+<meta property="og:description" content="关于CSI矫正的原理与方法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sheepsui-coder.github.io/posts/csi-calibration/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-11-29T00:00:00+00:00" /><meta property="og:site_name" content="DecayLab" />
+
+
+
+  
+  <link rel="canonical" href="https://sheepsui-coder.github.io/posts/csi-calibration/">
+
+  
+  
+  <meta itemprop="name" content="CSI Calibration">
+<meta itemprop="description" content="关于CSI矫正的原理与方法"><meta itemprop="datePublished" content="2023-11-29T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-11-29T00:00:00+00:00" />
+<meta itemprop="wordCount" content="3919">
+<meta itemprop="keywords" content="Calibration," />
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/common.min.e562d763c6d0825495eb17de8b2c1d9800cf7c08db1c36accedf77a5fccfc4b9.css" integrity="sha256-5WLXY8bQglSV6xfeiywdmADPfAjbHDaszt93pfzPxLk=" crossorigin="anonymous">
+  
+
+  
+  
+    <link rel="stylesheet" href="/css/content.min.ba38eba94cb47fef9936258c42d11ff19fa9686a30b38e783773fe3f15eb44dc.css" integrity="sha256-ujjrqUy0f&#43;&#43;ZNiWMQtEf8Z&#43;paGows454N3P&#43;PxXrRNw=" crossorigin="anonymous">
+  
+
+  
+  
+  <title>CSI Calibration - DecayLab</title>
+  
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CSI Calibration"/>
+<meta name="twitter:description" content="关于CSI矫正的原理与方法"/>
+
+
+  
+
+
+  <link rel="stylesheet" href="/css/single.min.be779f459ad7e3aaf8afd0f80c6a61ca6c50993f5f18512532100ac6d93f0fa9.css" integrity="sha256-vnefRZrX46r4r9D4DGphymxQmT9fGFElMhAKxtk/D6k=" crossorigin="anonymous">
+
+
+  <link rel="stylesheet" href="/css/single.min.78a121b7d7a160420f9daab0ea13add66c37b9c44f27bba07b27207e2b0975d2.css" integrity="sha256-eKEht9ehYEIPnaqw6hOt1mw3ucRPJ7ugeycgfisJddI=" crossorigin="anonymous">
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    
+
+
+<header id="header">
+  <h1>
+    <a href="https://sheepsui-coder.github.io/">DecayLab</a>
+    <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle theme">
+        <svg width="2rem" height="2rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+        <path fill="currentColor" d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z" transform="translate(-8 -8)"/>
+        </svg>
+    </button>
+  </h1>
+
+  <nav>
+    
+    <span class="nav-bar-item">
+      
+        <span class="icon"><svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M17,11H16a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm0,4H16a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2ZM11,9h6a1,1,0,0,0,0-2H11a1,1,0,0,0,0,2ZM21,3H7A1,1,0,0,0,6,4V7H3A1,1,0,0,0,2,8V18a3,3,0,0,0,3,3H18a4,4,0,0,0,4-4V4A1,1,0,0,0,21,3ZM6,18a1,1,0,0,1-2,0V9H6Zm14-1a2,2,0,0,1-2,2H7.82A3,3,0,0,0,8,18V5H20Zm-9-4h1a1,1,0,0,0,0-2H11a1,1,0,0,0,0,2Zm0,4h1a1,1,0,0,0,0-2H11a1,1,0,0,0,0,2Z"/></svg>
+</span>
+      
+      <a class="link" href="/posts/">Blog</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      
+        <span class="icon"><svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.88,16.88a3,3,0,0,0,0,4.24,3,3,0,0,0,4.24,0,3,3,0,0,0-4.24-4.24Zm2.83,2.83a1,1,0,0,1-1.42-1.42,1,1,0,0,1,1.42,0A1,1,0,0,1,5.71,19.71ZM5,12a1,1,0,0,0,0,2,5,5,0,0,1,5,5,1,1,0,0,0,2,0,7,7,0,0,0-7-7ZM5,8a1,1,0,0,0,0,2,9,9,0,0,1,9,9,1,1,0,0,0,2,0,11.08,11.08,0,0,0-3.22-7.78A11.08,11.08,0,0,0,5,8Zm10.61.39A15.11,15.11,0,0,0,5,4,1,1,0,0,0,5,6,13,13,0,0,1,18,19a1,1,0,0,0,2,0A15.11,15.11,0,0,0,15.61,8.39Z"/></svg>
+</span>
+      
+      <a class="link" href="/index.xml">RSS</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      
+        <span class="icon"><svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1">
+<path d="M10.07031,20.50291a1.00008,1.00008,0,0,0-1.18115-.9834c-1.30908.24024-2.96191.27637-3.40137-.958a5.70754,5.70754,0,0,0-1.83691-2.415,1.20073,1.20073,0,0,1-.1665-.10938,1,1,0,0,0-.93067-.64551H2.54883a.99965.99965,0,0,0-1,.99512c-.00391.81543.811,1.33789,1.1416,1.51465a4.4408,4.4408,0,0,1,.92383,1.35937c.36426,1.02344,1.42285,2.57617,4.46582,2.376.001.03516.00195.06836.00244.09863l.00439.26758a1,1,0,0,0,2,0l-.00488-.31836C10.07715,21.4951,10.07031,21.22068,10.07031,20.50291Zm10.667-15.126c.03174-.125.063-.26367.09034-.41992a6.27792,6.27792,0,0,0-.40821-3.293,1.002,1.002,0,0,0-.61572-.58007c-.356-.12012-1.67041-.35645-4.18408,1.25a13.86918,13.86918,0,0,0-6.354,0C6.76221.751,5.45459.9658,5.10205,1.07908a.99744.99744,0,0,0-.63135.584,6.3003,6.3003,0,0,0-.40332,3.35644c.02442.12793.05078.2461.07813.35449A6.26928,6.26928,0,0,0,2.89014,9.20311a8.42168,8.42168,0,0,0,.04248.92187c.334,4.60254,3.334,5.98438,5.42431,6.459-.04345.125-.083.25878-.11816.40039a1.00023,1.00023,0,0,0,1.94238.47851,1.6784,1.6784,0,0,1,.46778-.87793.99947.99947,0,0,0-.5459-1.74512c-3.4541-.39453-4.95362-1.80175-5.1792-4.89843a6.61076,6.61076,0,0,1-.03369-.73828,4.25769,4.25769,0,0,1,.91943-2.71289,3.022,3.022,0,0,1,.1958-.23145.99988.99988,0,0,0,.188-1.02441,3.3876,3.3876,0,0,1-.15527-.55567A4.09356,4.09356,0,0,1,6.1167,3.06346a7.54263,7.54263,0,0,1,2.415,1.17968,1.00877,1.00877,0,0,0,.82764.13282,11.77716,11.77716,0,0,1,6.17285.001,1.00549,1.00549,0,0,0,.83056-.13769,7.572,7.572,0,0,1,2.40528-1.19043,4.03977,4.03977,0,0,1,.0874,1.57812,3.205,3.205,0,0,1-.16895.60743.9999.9999,0,0,0,.188,1.02441c.07715.08691.1543.18066.22363.26855A4.12186,4.12186,0,0,1,20,9.20311a7.03888,7.03888,0,0,1-.0376.77734c-.22021,3.05566-1.72558,4.46387-5.1958,4.85937a1,1,0,0,0-.54541,1.7461,1.63079,1.63079,0,0,1,.46631.9082,3.06079,3.06079,0,0,1,.09229.81934v2.334C14.77,21.2949,14.77,21.78025,14.77,22.00291a1,1,0,1,0,2,0c0-.2168,0-.69238.00977-1.33984V18.31346a4.8815,4.8815,0,0,0-.15479-1.31153,4.25638,4.25638,0,0,0-.11621-.416,6.51258,6.51258,0,0,0,5.44531-6.42383A8.69677,8.69677,0,0,0,22,9.20311,6.13062,6.13062,0,0,0,20.7373,5.37693Z"/></svg>
+</span>
+      
+      <a class="link" href="https://github.com/SheepSui-coder">GitHub</a>
+    </span>
+    
+  </nav>
+</header>
+<hr class="head-rule"></hr>
+    
+<main id="main" class="post">
+  
+  <div class="post-heading">
+    <h1 class="post-title">CSI Calibration</h1>
+    <div class="publish-metadata">
+      
+      <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 9H21M7 3V5M17 3V5M6 13H8M6 17H8M11 13H13M11 17H13M16 13H18M16 17H18M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      29 November 2023
+      
+      
+        &nbsp;
+        <span>
+          <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          3919 words
+        </span>
+      
+      
+      
+        
+      
+      
+        &nbsp;
+        <span>
+          <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 7V12L14.5 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          ~8 mins
+        </span>
+      
+    </div>
+  </div>
+
+  
+  <div>
+    
+    <a class="link tag" href='https://sheepsui-coder.github.io/tags/calibration'>#Calibration</a>
+    
+    <br></br>
+  </div>
+  
+  
+  
+  <details>
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc numbered-subtitles"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#calibrating-phase-offsets-for-commodity-wifi">《Calibrating Phase Offsets for Commodity WiFi》</a></li>
+    <li><a href="#on-phase-offsets-of-80211-ac-commodity-wifi">《On Phase Offsets of 802.11 ac Commodity WiFi》</a></li>
+    <li><a href="#csi相位矫正的误差来源">CSI相位矫正的误差来源</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  <article class="content numbered-subtitles">
+    
+    <h2 id="calibrating-phase-offsets-for-commodity-wifi">《Calibrating Phase Offsets for Commodity WiFi》</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">配置选项</th>
+<th style="text-align:center">具体配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">网卡型号</td>
+<td style="text-align:center">Intel 5300 &amp; Atheros AR9380</td>
+</tr>
+<tr>
+<td style="text-align:center">WiFi 协议</td>
+<td style="text-align:center">802.11n</td>
+</tr>
+<tr>
+<td style="text-align:center">测试方法</td>
+<td style="text-align:center">同轴电缆 &amp; 分频器</td>
+</tr>
+<tr>
+<td style="text-align:center">频段</td>
+<td style="text-align:center">5.31-GHz carrier frequency with the 20-MHz bandwidth</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>研究背景与目的：<strong>文章聚焦于解决普通 WiFi 设备中</strong>不同射频链路之间（天线对）<strong>的相位偏移问题。这种相位偏移是由<!-- raw HTML omitted -->内部电路的</strong>固定</strong>延迟<!-- raw HTML omitted -->引起的，<!-- raw HTML omitted -->对于不同的芯片来说是相同的<!-- raw HTML omitted -->。文章通过广泛的实验和理论分析，探讨了商品级 WiFi 芯片上射频链路之间相位偏移的特性。</p>
+</li>
+<li>
+<p><strong class=chinese>实验方法</strong>：为了避免环境变化的影响，接收器和发射器通过同轴电缆和分频器连接。实验中，对30个<!-- raw HTML omitted -->子载波的相位偏移进行平均<!-- raw HTML omitted -->，以得出测量结果。实验包括100次实验，每次实验中，在一秒内传输和接收100个数据包。实验还包括<!-- raw HTML omitted -->电源关闭、系统重启和驱动程序重新加载<!-- raw HTML omitted -->，以模拟计算机和WiFi芯片的日常操作。</p>
+<ul>
+<li>测量过程中，通过交换<!-- raw HTML omitted -->线缆<!-- raw HTML omitted -->和<!-- raw HTML omitted -->分频器<!-- raw HTML omitted -->方向消除外部误差$\varphi_{ex1}$ $\varphi_{ex2}$ 分别表示线缆和分频器带来的误差：
+$$
+\begin{align}
+\phi^1_{12} &amp; = \phi_{12} + \phi_{ex2}-\phi_{ex1} \
+\phi^2_{12} &amp; = \phi_{12} + \phi_{ex1}-\phi_{ex2} \
+\phi_{12} &amp; = (\phi^1_{12} + \phi^2_{12})/2 \
+\end{align}
+$$</li>
+</ul>
+</li>
+<li>
+<p><strong class=chinese>实验结果</strong>：实验结果表明，对于Intel 5300 WiFi芯片，不同频道上的相位偏移变化相对较小。此外，文章还对Atheros AR9380 WiFi芯片进行了广泛的实验，结果与Intel 5300类似。</p>
+<ul>
+<li>
+<p>MEASURED VALUES OF PHASE OFFSETS ON INTEL 5300</p>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>$\varphi_{12}$ (rad)</th>
+<th>$\varphi_{13}$(rad)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>38</td>
+<td>-2.3762/0.7874</td>
+<td>-0.0065/3.1435</td>
+</tr>
+<tr>
+<td>46</td>
+<td>-2.3372/0.8225</td>
+<td>-0.0051/3.1399</td>
+</tr>
+<tr>
+<td>54</td>
+<td>-2.3415/0.8108</td>
+<td>-0.0193/3.1226</td>
+</tr>
+<tr>
+<td>62</td>
+<td>-2.3255/0.8131</td>
+<td>-0.0218/3.1151</td>
+</tr>
+<tr>
+<td>104</td>
+<td>-2.1536/1.0022</td>
+<td>0.0303/3.1094</td>
+</tr>
+<tr>
+<td>110</td>
+<td>-2.0611/0.8827</td>
+<td>0.0233/-3.1197</td>
+</tr>
+<tr>
+<td>118</td>
+<td>-2.0597/1.0891</td>
+<td>0.0265/-3.1134</td>
+</tr>
+<tr>
+<td>126</td>
+<td>-2.0741/1.0740</td>
+<td>0.0482/3.0442</td>
+</tr>
+<tr>
+<td>134</td>
+<td>-2.0049/1.0918</td>
+<td>0.0997/-3.0359</td>
+</tr>
+<tr>
+<td>151</td>
+<td>-2.0398/1.1016</td>
+<td>0.0719/3.0674</td>
+</tr>
+<tr>
+<td>159</td>
+<td>-2.0317/1.1031</td>
+<td>0.0347/-3.1014</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>MEASURED VALUES OF PHASE OFFSETS ON ATHEROS AR9380</p>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>$\varphi_{12}$ (rad)</th>
+<th>$\varphi_{13}$(rad)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>38</td>
+<td>-2.7717/0.3815</td>
+<td>-3.0813/0.0642</td>
+</tr>
+<tr>
+<td>46</td>
+<td>-2.8708/0.2515</td>
+<td>-3.1343/0.0045</td>
+</tr>
+<tr>
+<td>151</td>
+<td>2.4926/-0.7069</td>
+<td>2.4692/-0.7151</td>
+</tr>
+<tr>
+<td>159</td>
+<td>2.3658/-0.7888</td>
+<td>2.3399/-0.8254</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>根据实验结论，相位偏移实际上是半时不变的，有两个可能的值，对应上表中每个格子中的两个值。这种未<strong class=chinese>知的相位旋转</strong>可能是由[14]中报告的已发布的 CSI 工具中的错误引起的。由此可以得出结论，<strong>相位偏移实际上是常数，并且可能由于一些不确定的问题而旋转 $\pi$</strong>。
+$$
+\vert \phi&rsquo;<em>{m_1m_2} - \phi</em>{m_1m_2} \vert \approx \pi
+$$</p>
+</li>
+<li>
+<p><strong class=chinese>应用与结论</strong>：文章讨论了其研究成果在阵列系统使用商品级WiFi芯片中的实际部署方面的潜在应用，特别是在需要天线之间精确相位同步的系统中，如指纹定位系统。文章最后得出结论，通过本文报告的结果，可以大大简化相位偏移的校准过程。</p>
+<p>应用过程中，既可以通过遍历$2\times2$种可能的相位差组合来获得精准的估计：</p>
+</li>
+</ul>
+<p>​	<img src="../figure/CSI_Calibration/1.png" alt="image-20231128134311978"></p>
+<h2 id="on-phase-offsets-of-80211-ac-commodity-wifi">《On Phase Offsets of 802.11 ac Commodity WiFi》</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">配置选项</th>
+<th style="text-align:center">具体配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">网卡型号</td>
+<td style="text-align:center">Intel 9260</td>
+</tr>
+<tr>
+<td style="text-align:center">WiFi 协议</td>
+<td style="text-align:center">802.11ac</td>
+</tr>
+<tr>
+<td style="text-align:center">测试方法</td>
+<td style="text-align:center">同轴电缆 &amp; 分频器</td>
+</tr>
+<tr>
+<td style="text-align:center">频段</td>
+<td style="text-align:center">2.4 GHz band: channels 1-13 &amp; 5 GHz band: channels 36-64 and 100-165</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>**研究背景与目的：**随着无线感知应用的兴起，如用户定位、跟踪、无线路径识别等，利用现有的WiFi基础设施进行室内定位系统的研究变得越来越重要。文章的主要目的是分析现代IEEE 802.11ac芯片中射频链路之间的相位偏移。特别是，研究人员希望了解这些偏移在不同频段（2.4 GHz和5 GHz）以及不同OFDM子载波级别的表现，并提出一种无需额外校准过程的方法来校正这些偏移。</p>
+</li>
+<li>
+<p><strong>研究方法：</strong></p>
+<p><img src="../figure/CSI_Calibration/2.png" alt="image-20231128142234349"></p>
+<ul>
+<li>文章中采用了实验方法进行研究。使用基于Intel NUC（迷你主机）平台的实验设备，配备Intel 9260 WiFi NIC，对接收链路（天线）之间的相位偏移进行了实验。由于Intel 9260 WiFi芯片没有获取 CSI 功能，所以要进行如下操作：
+<ol>
+<li>从Intel后备驱动程序发布的核心46版本移植到Linux 5.5.1内核中</li>
+<li>配备我们修改过的Linux内核的Ubuntu桌面18.04操作系统
+<ul>
+<li>WiFi驱动程序都会估计CSI，并通过Netlink API传送到Linux用户空间</li>
+</ul>
+</li>
+<li>使用Python编写的 UniFlex（来自论文：<em>UniFlex: A Framework for Simplifying Wireless Network Control</em>）控制框架接收并处理了 Netlink 消息</li>
+<li>对CSI的编码进行逆向工程</li>
+</ol>
+</li>
+<li>通过将发射器和接收器通过同轴电缆和分频器连接，以避免环境影响（例如多径传播）和其变化（例如移动性）的影响。</li>
+<li>在2.4GHz和5GHz频段对接收天线之间的相位偏移进行测量，并提出了一种无需校准即可实时校正相位偏移的算法。</li>
+</ul>
+</li>
+<li>
+<p>**实验结果：**研究结果显示，接收天线之间的相位偏移是由随机相位旋转造成的，这些旋转是半时间不变的，最多有四个可能的值，并且是频率依赖的。</p>
+<p><img src="../figure/CSI_Calibration/3.png" alt="image-20231128142828143">可能的情况如下：</p>
+<ul>
+<li>
+<p>**情况A：**完美情况，测得的 $\hat{\varphi}$ 等于真实的 $\varphi$，即测量到的相位偏移等于真实相位偏移。</p>
+</li>
+<li>
+<p>**情况B：**除了子载波3和18的 $\hat{\varphi}$ 分别旋转了 $-2\pi$ 和 $+2\pi$ 之外，所有子载波都是正确的。</p>
+</li>
+<li>
+<p>**情况C：**误差情况，每个子载波的相位都旋转了 $\pi$，即 $\hat{\varphi}$ 中没有一个子载波的相位偏移是正确的（参见A）。</p>
+</li>
+<li>
+<p>**情况D：**类似于A，但有一个子载波旋转了 $+2\pi$。</p>
+</li>
+</ul>
+<p>从实验结果我们可以得出结论，测量到的RX相位偏移 $\hat{\varphi}$ 可能会围绕 $\varphi$ 旋转多个 $\pi$。此外，通过分析整个数据集我们发现，旋转是否发生以及旋转的角度严格取决于真实的 $\varphi$ 是正是负：
+$$
+\hat{\varphi} =
+\begin{cases}
+\varphi + n\pi, &amp; n \in {-2, -1, 0, 1}, \text{ if } \varphi &gt; 0 \
+\varphi + n\pi, &amp; n \in {-1, 0, 1, 2}, \text{ otherwise}
+\end{cases}
+$$
+<img src="../figure/CSI_Calibration/4.png" alt="image-20231128172615934"></p>
+<ul>
+<li>图3显示了WiFi NIC两个接收天线之间的中位数相位偏移，涵盖了2.4 GHz ISM频段的1-13频道，按子载波分。图中展示了消除了由电缆和分频器引入的相位偏移之后的相位偏移值。我们可以观察到接收天线的相位偏移接近零，并且略微依赖于频率。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Channel</th>
+<th style="text-align:center">$\varphi$(rad)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-0.1628</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">-0.1557</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">-0.1477</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">-0.1388</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">-0.1303</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">-0.1228</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">-0.1163</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">-0.1114</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">-0.1079</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">-0.1054</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td style="text-align:center">-0.1031</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td style="text-align:center">-0.1044</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td style="text-align:center">-0.0883</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>上表总结了通过对子载波求平均后每个频道的相位偏移测量值。2.4 GHz频带中不同子载波之间的相位偏移差异小，即0.086 ≈ 5°。</p>
+</li>
+<li>
+<p>图4显示了有效相位偏移的分布，即那些没有随机相位偏移旋转的。我们看到一个狭窄的分布，即更多的数据接近平均值，标准偏差仅为0.0008 ≈ 0.05°。</p>
+</li>
+<li>
+<p>图5和图6展示了5 GHz频带中频道的值。我们可以看到较低的5 GHz频道的接收天线相位偏移在-0.3到-0.1之间，较高频道则在0.1到0.5之间。注意，这样的范围相当于45°。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>**校正算法：**通过大量的包进行平均以及去除离群值：</p>
+<ul>
+<li>
+<p>在2.4 GHz频段中，相邻的频道会相互重叠15 MHz，这意味着一个特定的频率（OFDM子载波）会被多个频道同时测量。为了利用这一点，我们在1到13号所有频道上发送数据包。为了进一步补偿随机相位旋转，我们在每个频道上发送N个数据包。这样我们就得到了对于特定子载波的接收天线相位偏移 $\hat{\varphi}_{t,c}(f)$ 的多次测量，其中 $f$ 是OFDM子载波，$t=1\dots N$是数据包的编号，而  是在$c\in C(f)$该子载波上重叠的频道集合。</p>
+</li>
+<li>
+<p>接下来，构建一个向量$\vec{\hat{\varphi}}<em>{t,c}=\left(\hat{\varphi}</em>{t,c}(0),\dots,\hat{\varphi}<em>{t,c}(N)\right)$，其中 $0\dots F$ 表示当结合13个频道时的子载波总数。然后我们过滤并替换异常值$\vec{\hat{\varphi}}</em>{t^*,c}=\text{filloutliers}(\vec{\hat{\varphi}}_{t,c})$。这里可以使用Matlab自带的 <code>filloutliers(x,'linear')</code> 函数</p>
+</li>
+<li>
+<p>接着对于特定子载波的接收天线相位偏移估计是通过计算中位数$\varphi^<em>(f)=\text{med}\left(\vec{\hat{\varphi}}_{t^</em>,c}\right), \ t=1\dots N,\ c\in C(f) $ 来完成。</p>
+</li>
+<li>
+<p>创建表示校正后相位偏移的最终向量为$\vec{\varphi}=\text{filloutliers}((\varphi^<em>(0),\dots,\varphi^</em>(F)))$</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="csi相位矫正的误差来源">CSI相位矫正的误差来源</h2>
+<blockquote>
+<p>内容来自《Calibrating Phase Offsets for Commodity WiFi》</p>
+</blockquote>
+<p>CSI相位的误差是由不完美的惯性电路引入的多种相位失真。其表达式可以建模为如下公式：
+$$
+H(t, m, k) = e^{-j2\pi(f_{\text{CFO}}t + k\Delta f (\tau_{\text{SFO}}(t) + \tau_{\text{PDD}}(t)))} \times e^{j\varphi_m} \sum_{i=1}^{L} \alpha_i e^{-j2\pi fk\tau_{mi}}
+$$
+其中包含时间索引 $t$，天线索引 $m$，子载波索引 $k$，载波频率偏移 $f_{CFO}$，采样频率偏移 $\tau_{SFO}$，包检测延迟 $\tau_{PDD}$，以及相位锁定环（phase-locked-loop, PLL）初始相位 $\varphi$ 等。其中相位失真来源包括：包括载波频率偏移（CFO）、采样频率偏移（SFO）、包检测延迟（PDD）和PLL初始相位。</p>
+<p>通常来说，CFO、PDD和SFO在不同射频链之间是相同的，因此对诸如角度谱估计（ASP）算法的影响不大，但PLL初始相位在不同射频链间是不同的，需要校准。</p>
+<p>我们可以通过典型的802.11 WiFi芯片设计来推测其内部结构，来分析PLL是如何引入误差的。其信号处理过程为：来自天线的信号被送入不同的从属芯片，这些芯片包含用于执行下变频操作的射频链路。而为避免出现时变偏移，所有从属芯片实际上共享来自同一个相位锁定环（PLL）的信号。唯一的相位偏移是由电路中的固定延迟引入的，这个延迟由芯片上的电缆长度决定。因此，两个射频链路之间的相位偏移可以用公式 $\varphi = 2\pi f \tau$表示，其中 $\tau$ 表示射频链路之间的固定延迟。</p>
+<blockquote>
+<p>内容来自《基于迁移学习的WiFi室内定位技术》</p>
+</blockquote>
+<ol>
+<li><strong>AGC功率控制误差</strong>：自动增益控制（AGC）电路通过调整接收机的增益来适应输入信号强度的变化，使输出信号幅度保持恒定或仅在小范围内变化。虽然AGC能够避免接收机因信号过强或过弱而无法正常工作，但在获取CSI数据时，AGC处理后的数据无法准确反映距离信息。</li>
+<li><strong>载波频率偏移（CFO）</strong>：CFO校正器用于确保测量结果的准确性。由于软件限制，CFO校正器可能无法完全消除误差，剩余的频率偏移对CSI测量产生负面影响。</li>
+<li><strong>数据包检测延迟（PDD）</strong>：数据包检测器利用前导码和信号的能量峰值来确定数据包的边界。由于相关器精度和计算延迟的限制，接收信号可能存在时间偏移误差，这可能导致传输延迟比实际更高。</li>
+<li><strong>采样频率偏移（SFO）</strong>：由于接收机和发射机采样频率的差异，CSI的测量结果可能存在偏离。尽管接收机进行了校正，但仍存在剩余误差。</li>
+<li><strong>采样时钟偏移（STO）</strong>：由于发射端和接收端的时钟不同步，采样时钟出现偏差。STO现象导致每条传播路径的飞行时间（ToF）增加时间偏移，因此在估计ToF时必须考虑STO的影响。</li>
+</ol>
+
+    
+  </article>
+
+  <button onclick="topFunction()" id="back-to-top" title="Go to top">Back to Top</button>
+
+  
+
+<div id="sharingbuttons">
+    
+    
+    <a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fsheepsui-coder.github.io%2fposts%2fcsi-calibration%2f" target="_blank" rel="noopener" aria-label="">
+      <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/></svg>
+        </div>
+      </div>
+    </a>
+    
+
+    
+    
+    <a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?text=CSI%20Calibration&amp;url=https%3a%2f%2fsheepsui-coder.github.io%2fposts%2fcsi-calibration%2f" target="_blank" rel="noopener" aria-label="">
+      <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.44 4.83c-.8.37-1.5.38-2.22.02.93-.56.98-.96 1.32-2.02-.88.52-1.86.9-2.9 1.1-.82-.88-2-1.43-3.3-1.43-2.5 0-4.55 2.04-4.55 4.54 0 .36.03.7.1 1.04-3.77-.2-7.12-2-9.36-4.75-.4.67-.6 1.45-.6 2.3 0 1.56.8 2.95 2 3.77-.74-.03-1.44-.23-2.05-.57v.06c0 2.2 1.56 4.03 3.64 4.44-.67.2-1.37.2-2.06.08.58 1.8 2.26 3.12 4.25 3.16C5.78 18.1 3.37 18.74 1 18.46c2 1.3 4.4 2.04 6.97 2.04 8.35 0 12.92-6.92 12.92-12.93 0-.2 0-.4-.02-.6.9-.63 1.96-1.22 2.56-2.14z"/></svg>
+        </div>
+      </div>
+    </a>
+    
+
+    
+    
+    <a class="resp-sharing-button__link" href="mailto:?subject=CSI%20Calibration&amp;body=https%3a%2f%2fsheepsui-coder.github.io%2fposts%2fcsi-calibration%2f" target="_self" rel="noopener" aria-label="">
+      <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM7.25 14.43l-3.5 2c-.08.05-.17.07-.25.07-.17 0-.34-.1-.43-.25-.14-.24-.06-.55.18-.68l3.5-2c.24-.14.55-.06.68.18.14.24.06.55-.18.68zm4.75.07c-.1 0-.2-.03-.27-.08l-8.5-5.5c-.23-.15-.3-.46-.15-.7.15-.22.46-.3.7-.14L12 13.4l8.23-5.32c.23-.15.54-.08.7.15.14.23.07.54-.16.7l-8.5 5.5c-.08.04-.17.07-.27.07zm8.93 1.75c-.1.16-.26.25-.43.25-.08 0-.17-.02-.25-.07l-3.5-2c-.24-.13-.32-.44-.18-.68s.44-.32.68-.18l3.5 2c.24.13.32.44.18.68z"/></svg>
+        </div>
+      </div>
+    </a>
+    
+
+    
+    
+    <a class="resp-sharing-button__link" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3a%2f%2fsheepsui-coder.github.io%2fposts%2fcsi-calibration%2f" target="_blank" rel="noopener" aria-label="">
+      <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.5 21.5h-5v-13h5v13zM4 6.5C2.5 6.5 1.5 5.3 1.5 4s1-2.4 2.5-2.4c1.6 0 2.5 1 2.6 2.5 0 1.4-1 2.5-2.6 2.5zm11.5 6c-1 0-2 1-2 2v7h-5v-13h5V10s1.6-1.5 4-1.5c3 0 5 2.2 5 6.3v6.7h-5v-7c0-1-1-2-2-2z"/></svg>
+        </div>
+      </div>
+    </a>
+    
+
+    
+    
+    <a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fsheepsui-coder.github.io%2fposts%2fcsi-calibration%2f&amp;resubmit=true&amp;title=CSI%20Calibration" target="_blank" rel="noopener" aria-label="">
+      <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.75-1.64-6.07-1.72.08-1.1.4-3.05 1.52-3.7.72-.4 1.73-.24 3 .5C17.2 6.3 18.46 7.5 20 7.5c1.65 0 3-1.35 3-3s-1.35-3-3-3c-1.38 0-2.54.94-2.88 2.22-1.43-.72-2.64-.8-3.6-.25-1.64.94-1.95 3.47-2 4.55-2.33.08-4.45.7-6.1 1.72C4.86 8.98 3.96 8.5 3 8.5c-1.65 0-3 1.35-3 3 0 1.32.84 2.44 2.05 2.84-.03.22-.05.44-.05.66 0 3.86 4.5 7 10 7s10-3.14 10-7c0-.22-.02-.44-.05-.66 1.2-.4 2.05-1.54 2.05-2.84zM2.3 13.37C1.5 13.07 1 12.35 1 11.5c0-1.1.9-2 2-2 .64 0 1.22.32 1.6.82-1.1.85-1.92 1.9-2.3 3.05zm3.7.13c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9.8 4.8c-1.08.63-2.42.96-3.8.96-1.4 0-2.74-.34-3.8-.95-.24-.13-.32-.44-.2-.68.15-.24.46-.32.7-.18 1.83 1.06 4.76 1.06 6.6 0 .23-.13.53-.05.67.2.14.23.06.54-.18.67zm.2-2.8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5.7-2.13c-.38-1.16-1.2-2.2-2.3-3.05.38-.5.97-.82 1.6-.82 1.1 0 2 .9 2 2 0 .84-.53 1.57-1.3 1.87z"/></svg>
+        </div>
+      </div>
+    </a>
+    
+
+    
+    
+    <a class="resp-sharing-button__link" href="whatsapp://send?text=https%3a%2f%2fsheepsui-coder.github.io%2fposts%2fcsi-calibration%2f" target="_blank" rel="noopener" aria-label="">
+      <div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.1 3.9C17.9 1.7 15 .5 12 .5 5.8.5.7 5.6.7 11.9c0 2 .5 3.9 1.5 5.6L.6 23.4l6-1.6c1.6.9 3.5 1.3 5.4 1.3 6.3 0 11.4-5.1 11.4-11.4-.1-2.8-1.2-5.7-3.3-7.8zM12 21.4c-1.7 0-3.3-.5-4.8-1.3l-.4-.2-3.5 1 1-3.4L4 17c-1-1.5-1.4-3.2-1.4-5.1 0-5.2 4.2-9.4 9.4-9.4 2.5 0 4.9 1 6.7 2.8 1.8 1.8 2.8 4.2 2.8 6.7-.1 5.2-4.3 9.4-9.5 9.4zm5.1-7.1c-.3-.1-1.7-.9-1.9-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1s-1.2-.5-2.3-1.4c-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6s.3-.3.4-.5c.2-.1.3-.3.4-.5.1-.2 0-.4 0-.5C10 9 9.3 7.6 9 7c-.1-.4-.4-.3-.5-.3h-.6s-.4.1-.7.3c-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.3-.3-.4-.6-.5z"/></svg>
+        </div>
+      </div>
+    </a>
+    
+
+    
+    
+    <a class="resp-sharing-button__link" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fsheepsui-coder.github.io%2fposts%2fcsi-calibration%2f&amp;t=CSI%20Calibration" target="_blank" rel="noopener" aria-label="">
+      <div class="resp-sharing-button resp-sharing-button--hackernews resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140"><path fill-rule="evenodd" d="M60.94 82.314L17 0h20.08l25.85 52.093c.397.927.86 1.888 1.39 2.883.53.994.995 2.02 1.393 3.08.265.4.463.764.596 1.095.13.334.262.63.395.898.662 1.325 1.26 2.618 1.79 3.877.53 1.26.993 2.42 1.39 3.48 1.06-2.254 2.22-4.673 3.48-7.258 1.26-2.585 2.552-5.27 3.877-8.052L103.49 0h18.69L77.84 83.308v53.087h-16.9v-54.08z"></path></svg>
+        </div>
+      </div>
+    </a>
+    
+
+    
+    
+    <a class="resp-sharing-button__link" href="https://telegram.me/share/url?text=CSI%20Calibration&amp;url=https%3a%2f%2fsheepsui-coder.github.io%2fposts%2fcsi-calibration%2f" target="_blank" rel="noopener" aria-label="">
+      <div class="resp-sharing-button resp-sharing-button--telegram resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.707 8.475C.275 8.64 0 9.508 0 9.508s.284.867.718 1.03l5.09 1.897 1.986 6.38a1.102 1.102 0 0 0 1.75.527l2.96-2.41a.405.405 0 0 1 .494-.013l5.34 3.87a1.1 1.1 0 0 0 1.046.135 1.1 1.1 0 0 0 .682-.803l3.91-18.795A1.102 1.102 0 0 0 22.5.075L.706 8.475z"/></svg>
+        </div>
+      </div>
+    </a>
+    
+</div>
+  <div class="paginator">
+    
+    <a></a>
+    
+    
+    <a></a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+      <script src="https://giscus.app/client.js"
+        data-repo="michaelneuper/hugo-texify3"
+        data-repo-id="R_kgDOIjPNaQ"
+        data-category="General"
+        data-category-id="DIC_kwDOIjPNac4CaklA"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme=""
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+  </script>
+  
+  </div>
+  
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>Powered by  <a class=link href=https://gohugo.io target=_blank rel=noopener>Hugo</a> | 
+Theme <a class=link href=https://github.com/michaelneuper/hugo-texify3 target=_blank rel=noopener>TeXify3</a>
+</span>
+  </div>
+  <div>
+    <span>Copyright © 2023 Sheep Sui</span>
+  </div>
+</footer>
+
+  </div>
+
+  
+  <script src='https://sheepsui-coder.github.io/js/script.js' defer></script>
+
+  
+  
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
