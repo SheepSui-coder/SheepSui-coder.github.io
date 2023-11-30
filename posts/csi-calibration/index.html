@@ -64,7 +64,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://sheepsui-coder.github.io/posts/csi-calibration/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-11-29T00:00:00+00:00" />
-<meta property="article:modified_time" content="2023-11-29T00:00:00+00:00" /><meta property="og:site_name" content="DecayLab" />
+<meta property="article:modified_time" content="2023-11-29T00:00:00+00:00" /><meta property="og:site_name" content="WNLO.F408" />
 
 
 
@@ -76,7 +76,7 @@
   <meta itemprop="name" content="CSI Calibration">
 <meta itemprop="description" content="关于CSI矫正的原理与方法"><meta itemprop="datePublished" content="2023-11-29T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-11-29T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3919">
+<meta itemprop="wordCount" content="3604">
 <meta itemprop="keywords" content="Calibration," />
 
   
@@ -92,7 +92,7 @@
 
   
   
-  <title>CSI Calibration - DecayLab</title>
+  <title>CSI Calibration - WNLO.F408</title>
   
 
   
@@ -119,7 +119,7 @@
 
 <header id="header">
   <h1>
-    <a href="https://sheepsui-coder.github.io/">DecayLab</a>
+    <a href="https://sheepsui-coder.github.io/">WNLO.F408</a>
     <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle theme">
         <svg width="2rem" height="2rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
         <path fill="currentColor" d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z" transform="translate(-8 -8)"/>
@@ -177,7 +177,7 @@
           <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          3919 words
+          3604 words
         </span>
       
       
@@ -212,8 +212,22 @@
     </summary>
     <div class="toc numbered-subtitles"><nav id="TableOfContents">
   <ul>
-    <li><a href="#calibrating-phase-offsets-for-commodity-wifi">《Calibrating Phase Offsets for Commodity WiFi》</a></li>
-    <li><a href="#on-phase-offsets-of-80211-ac-commodity-wifi">《On Phase Offsets of 802.11 ac Commodity WiFi》</a></li>
+    <li><a href="#calibrating-phase-offsets-for-commodity-wifi">《Calibrating Phase Offsets for Commodity WiFi》</a>
+      <ul>
+        <li><a href="#研究背景与目的">研究背景与目的</a></li>
+        <li><a href="#实验方法">实验方法</a></li>
+        <li><a href="#实验结果">实验结果</a></li>
+        <li><a href="#应用与结论">应用与结论</a></li>
+      </ul>
+    </li>
+    <li><a href="#on-phase-offsets-of-80211-ac-commodity-wifi">《On Phase Offsets of 802.11 ac Commodity WiFi》</a>
+      <ul>
+        <li><a href="#研究背景与目的-1">研究背景与目的</a></li>
+        <li><a href="#研究方法">研究方法：</a></li>
+        <li><a href="#实验结果-1">实验结果</a></li>
+        <li><a href="#校正算法">校正算法</a></li>
+      </ul>
+    </li>
     <li><a href="#csi相位矫正的误差来源">CSI相位矫正的误差来源</a></li>
   </ul>
 </nav></div>
@@ -249,25 +263,22 @@
 </tr>
 </tbody>
 </table>
-<ul>
-<li>
-<p><strong>研究背景与目的：<strong>文章聚焦于解决普通 WiFi 设备中</strong>不同射频链路之间（天线对）<strong>的相位偏移问题。这种相位偏移是由<!-- raw HTML omitted -->内部电路的</strong>固定</strong>延迟<!-- raw HTML omitted -->引起的，<!-- raw HTML omitted -->对于不同的芯片来说是相同的<!-- raw HTML omitted -->。文章通过广泛的实验和理论分析，探讨了商品级 WiFi 芯片上射频链路之间相位偏移的特性。</p>
-</li>
-<li>
-<p><strong class=chinese>实验方法</strong>：为了避免环境变化的影响，接收器和发射器通过同轴电缆和分频器连接。实验中，对30个<!-- raw HTML omitted -->子载波的相位偏移进行平均<!-- raw HTML omitted -->，以得出测量结果。实验包括100次实验，每次实验中，在一秒内传输和接收100个数据包。实验还包括<!-- raw HTML omitted -->电源关闭、系统重启和驱动程序重新加载<!-- raw HTML omitted -->，以模拟计算机和WiFi芯片的日常操作。</p>
-<ul>
-<li>测量过程中，通过交换<!-- raw HTML omitted -->线缆<!-- raw HTML omitted -->和<!-- raw HTML omitted -->分频器<!-- raw HTML omitted -->方向消除外部误差$\varphi_{ex1}$ $\varphi_{ex2}$ 分别表示线缆和分频器带来的误差：
+<h3 id="研究背景与目的">研究背景与目的</h3>
+<p>文章聚焦于解决普通 WiFi 设备中不同射频链路之间（天线对）的相位偏移问题。这种相位偏移是由内部电路的固定延迟引起的，对于不同的芯片来说是相同的。文章通过广泛的实验和理论分析，探讨了商品级 WiFi 芯片上射频链路之间相位偏移的特性。</p>
+<h3 id="实验方法">实验方法</h3>
+<p>为了避免环境变化的影响，接收器和发射器通过同轴电缆和分频器连接。实验中，对30个子载波的相位偏移进行平均，以得出测量结果。实验包括100次实验，每次实验中，在一秒内传输和接收100个数据包。实验还包括电源关闭、系统重启和驱动程序重新加载，以模拟计算机和WiFi芯片的日常操作。</p>
+<p>测量过程中，通过交换线缆和分频器方向消除外部误差<!-- raw HTML omitted -->$\varphi_{ex1}$<!-- raw HTML omitted -->,<!-- raw HTML omitted --> $\varphi_{ex2}$<!-- raw HTML omitted --> 分别表示线缆和分频器带来的误差：
 $$
-\begin{align}
-\phi^1_{12} &amp; = \phi_{12} + \phi_{ex2}-\phi_{ex1} \
-\phi^2_{12} &amp; = \phi_{12} + \phi_{ex1}-\phi_{ex2} \
-\phi_{12} &amp; = (\phi^1_{12} + \phi^2_{12})/2 \
-\end{align}
-$$</li>
-</ul>
-</li>
-<li>
-<p><strong class=chinese>实验结果</strong>：实验结果表明，对于Intel 5300 WiFi芯片，不同频道上的相位偏移变化相对较小。此外，文章还对Atheros AR9380 WiFi芯片进行了广泛的实验，结果与Intel 5300类似。</p>
+\phi^1_{12} = \phi_{12} + \phi_{ex2}-\phi_{ex1}
+$$</p>
+<p>$$
+\phi^2_{12} = \phi_{12} + \phi_{ex1}-\phi_{ex2}
+$$</p>
+<p>$$
+\phi_{12} = (\phi^1_{12} + \phi^2_{12})/2
+$$</p>
+<h3 id="实验结果">实验结果</h3>
+<p>实验结果表明，对于Intel 5300 WiFi芯片，不同频道上的相位偏移变化相对较小。此外，文章还对Atheros AR9380 WiFi芯片进行了广泛的实验，结果与Intel 5300类似。</p>
 <ul>
 <li>
 <p>MEASURED VALUES OF PHASE OFFSETS ON INTEL 5300</p>
@@ -275,65 +286,65 @@ $$</li>
 <thead>
 <tr>
 <th>Channel</th>
-<th>$\varphi_{12}$ (rad)</th>
-<th>$\varphi_{13}$(rad)</th>
+<th style="text-align:center">$\varphi_{12}$ (rad)</th>
+<th style="text-align:center">$\varphi_{13}$(rad)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>38</td>
-<td>-2.3762/0.7874</td>
-<td>-0.0065/3.1435</td>
+<td style="text-align:center">-2.3762/0.7874</td>
+<td style="text-align:center">-0.0065/3.1435</td>
 </tr>
 <tr>
 <td>46</td>
-<td>-2.3372/0.8225</td>
-<td>-0.0051/3.1399</td>
+<td style="text-align:center">-2.3372/0.8225</td>
+<td style="text-align:center">-0.0051/3.1399</td>
 </tr>
 <tr>
 <td>54</td>
-<td>-2.3415/0.8108</td>
-<td>-0.0193/3.1226</td>
+<td style="text-align:center">-2.3415/0.8108</td>
+<td style="text-align:center">-0.0193/3.1226</td>
 </tr>
 <tr>
 <td>62</td>
-<td>-2.3255/0.8131</td>
-<td>-0.0218/3.1151</td>
+<td style="text-align:center">-2.3255/0.8131</td>
+<td style="text-align:center">-0.0218/3.1151</td>
 </tr>
 <tr>
 <td>104</td>
-<td>-2.1536/1.0022</td>
-<td>0.0303/3.1094</td>
+<td style="text-align:center">-2.1536/1.0022</td>
+<td style="text-align:center">0.0303/3.1094</td>
 </tr>
 <tr>
 <td>110</td>
-<td>-2.0611/0.8827</td>
-<td>0.0233/-3.1197</td>
+<td style="text-align:center">-2.0611/0.8827</td>
+<td style="text-align:center">0.0233/-3.1197</td>
 </tr>
 <tr>
 <td>118</td>
-<td>-2.0597/1.0891</td>
-<td>0.0265/-3.1134</td>
+<td style="text-align:center">-2.0597/1.0891</td>
+<td style="text-align:center">0.0265/-3.1134</td>
 </tr>
 <tr>
 <td>126</td>
-<td>-2.0741/1.0740</td>
-<td>0.0482/3.0442</td>
+<td style="text-align:center">-2.0741/1.0740</td>
+<td style="text-align:center">0.0482/3.0442</td>
 </tr>
 <tr>
 <td>134</td>
-<td>-2.0049/1.0918</td>
-<td>0.0997/-3.0359</td>
+<td style="text-align:center">-2.0049/1.0918</td>
+<td style="text-align:center">0.0997/-3.0359</td>
 </tr>
 <tr>
 <td>151</td>
-<td>-2.0398/1.1016</td>
-<td>0.0719/3.0674</td>
+<td style="text-align:center">-2.0398/1.1016</td>
+<td style="text-align:center">0.0719/3.0674</td>
 </tr>
 <tr>
 <td>159</td>
-<td>-2.0317/1.1031</td>
-<td>0.0347/-3.1014</td>
+<td style="text-align:center">-2.0317/1.1031</td>
+<td style="text-align:center">0.0347/-3.1014</td>
 </tr>
 </tbody>
 </table>
@@ -344,46 +355,43 @@ $$</li>
 <thead>
 <tr>
 <th>Channel</th>
-<th>$\varphi_{12}$ (rad)</th>
-<th>$\varphi_{13}$(rad)</th>
+<th style="text-align:center">$\varphi_{12}$ (rad)</th>
+<th style="text-align:center">$\varphi_{13}$(rad)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>38</td>
-<td>-2.7717/0.3815</td>
-<td>-3.0813/0.0642</td>
+<td style="text-align:center">-2.7717/0.3815</td>
+<td style="text-align:center">-3.0813/0.0642</td>
 </tr>
 <tr>
 <td>46</td>
-<td>-2.8708/0.2515</td>
-<td>-3.1343/0.0045</td>
+<td style="text-align:center">-2.8708/0.2515</td>
+<td style="text-align:center">-3.1343/0.0045</td>
 </tr>
 <tr>
 <td>151</td>
-<td>2.4926/-0.7069</td>
-<td>2.4692/-0.7151</td>
+<td style="text-align:center">2.4926/-0.7069</td>
+<td style="text-align:center">2.4692/-0.7151</td>
 </tr>
 <tr>
 <td>159</td>
-<td>2.3658/-0.7888</td>
-<td>2.3399/-0.8254</td>
+<td style="text-align:center">2.3658/-0.7888</td>
+<td style="text-align:center">2.3399/-0.8254</td>
 </tr>
 </tbody>
 </table>
 </li>
 </ul>
-<p>根据实验结论，相位偏移实际上是半时不变的，有两个可能的值，对应上表中每个格子中的两个值。这种未<strong class=chinese>知的相位旋转</strong>可能是由[14]中报告的已发布的 CSI 工具中的错误引起的。由此可以得出结论，<strong>相位偏移实际上是常数，并且可能由于一些不确定的问题而旋转 $\pi$</strong>。
-$$
-\vert \phi&rsquo;<em>{m_1m_2} - \phi</em>{m_1m_2} \vert \approx \pi
+<p>根据实验结论，相位偏移实际上是半时不变的，有两个可能的值，对应上表中每个格子中的两个值。这种未知的相位旋转可能是由 CSI tool 报告的已发布的 CSI 工具中的错误引起的。由此可以得出结论，相位偏移实际上是常数，并且可能由于一些不确定的问题而旋转 $\pi$。</p>
+<p>$$
+\vert \phi^\prime_{m_1m_2} - \phi_{m_1m_2} \vert \approx \pi
 $$</p>
-</li>
-<li>
-<p><strong class=chinese>应用与结论</strong>：文章讨论了其研究成果在阵列系统使用商品级WiFi芯片中的实际部署方面的潜在应用，特别是在需要天线之间精确相位同步的系统中，如指纹定位系统。文章最后得出结论，通过本文报告的结果，可以大大简化相位偏移的校准过程。</p>
-<p>应用过程中，既可以通过遍历$2\times2$种可能的相位差组合来获得精准的估计：</p>
-</li>
-</ul>
-<p>​	<img src="../figure/CSI_Calibration/1.png" alt="image-20231128134311978"></p>
+<h3 id="应用与结论">应用与结论</h3>
+<p>文章讨论了其研究成果在阵列系统使用商品级WiFi芯片中的实际部署方面的潜在应用，特别是在需要天线之间精确相位同步的系统中，如指纹定位系统。文章最后得出结论，通过本文报告的结果，可以大大简化相位偏移的校准过程。</p>
+<p>应用过程中，既可以通过遍历<!-- raw HTML omitted -->$2\times2$<!-- raw HTML omitted -->种可能的相位差组合来获得精准的估计：</p>
+<p>​	<img src="/figure/CSI_Calibration/1.png" alt="image-20231128134311978"></p>
 <h2 id="on-phase-offsets-of-80211-ac-commodity-wifi">《On Phase Offsets of 802.11 ac Commodity WiFi》</h2>
 <table>
 <thead>
@@ -411,13 +419,10 @@ $$</p>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>
-<p>**研究背景与目的：**随着无线感知应用的兴起，如用户定位、跟踪、无线路径识别等，利用现有的WiFi基础设施进行室内定位系统的研究变得越来越重要。文章的主要目的是分析现代IEEE 802.11ac芯片中射频链路之间的相位偏移。特别是，研究人员希望了解这些偏移在不同频段（2.4 GHz和5 GHz）以及不同OFDM子载波级别的表现，并提出一种无需额外校准过程的方法来校正这些偏移。</p>
-</li>
-<li>
-<p><strong>研究方法：</strong></p>
-<p><img src="../figure/CSI_Calibration/2.png" alt="image-20231128142234349"></p>
+<h3 id="研究背景与目的-1">研究背景与目的</h3>
+<p>随着无线感知应用的兴起，如用户定位、跟踪、无线路径识别等，利用现有的WiFi基础设施进行室内定位系统的研究变得越来越重要。文章的主要目的是分析现代IEEE 802.11ac芯片中射频链路之间的相位偏移。特别是，研究人员希望了解这些偏移在不同频段（2.4 GHz和5 GHz）以及不同OFDM子载波级别的表现，并提出一种无需额外校准过程的方法来校正这些偏移。</p>
+<h3 id="研究方法">研究方法：</h3>
+<p><img src="/figure/CSI_Calibration/2.png" alt="image-20231128142234349"></p>
 <ul>
 <li>文章中采用了实验方法进行研究。使用基于Intel NUC（迷你主机）平台的实验设备，配备Intel 9260 WiFi NIC，对接收链路（天线）之间的相位偏移进行了实验。由于Intel 9260 WiFi芯片没有获取 CSI 功能，所以要进行如下操作：
 <ol>
@@ -434,36 +439,33 @@ $$</p>
 <li>通过将发射器和接收器通过同轴电缆和分频器连接，以避免环境影响（例如多径传播）和其变化（例如移动性）的影响。</li>
 <li>在2.4GHz和5GHz频段对接收天线之间的相位偏移进行测量，并提出了一种无需校准即可实时校正相位偏移的算法。</li>
 </ul>
-</li>
-<li>
-<p>**实验结果：**研究结果显示，接收天线之间的相位偏移是由随机相位旋转造成的，这些旋转是半时间不变的，最多有四个可能的值，并且是频率依赖的。</p>
-<p><img src="../figure/CSI_Calibration/3.png" alt="image-20231128142828143">可能的情况如下：</p>
+<h3 id="实验结果-1">实验结果</h3>
+<p>研究结果显示，接收天线之间的相位偏移是由随机相位旋转造成的，这些旋转是半时间不变的，最多有四个可能的值，并且是频率依赖的。</p>
+<p><img src="/figure/CSI_Calibration/3.png" alt="image-20231128142828143">可能的情况如下：</p>
 <ul>
 <li>
-<p>**情况A：**完美情况，测得的 $\hat{\varphi}$ 等于真实的 $\varphi$，即测量到的相位偏移等于真实相位偏移。</p>
+<p><strong>情况A</strong>：完美情况，测得的 $\hat{\varphi}$ 等于真实的 $\varphi$，即测量到的相位偏移等于真实相位偏移。</p>
 </li>
 <li>
-<p>**情况B：**除了子载波3和18的 $\hat{\varphi}$ 分别旋转了 $-2\pi$ 和 $+2\pi$ 之外，所有子载波都是正确的。</p>
+<p><strong>情况B</strong>：除了子载波3和18的 $\hat{\varphi}$ 分别旋转了 $-2\pi$ 和 $+2\pi$ 之外，所有子载波都是正确的。</p>
 </li>
 <li>
-<p>**情况C：**误差情况，每个子载波的相位都旋转了 $\pi$，即 $\hat{\varphi}$ 中没有一个子载波的相位偏移是正确的（参见A）。</p>
+<p><strong>情况C</strong>：误差情况，每个子载波的相位都旋转了 $\pi$，即 $\hat{\varphi}$ 中没有一个子载波的相位偏移是正确的（参见A）。</p>
 </li>
 <li>
-<p>**情况D：**类似于A，但有一个子载波旋转了 $+2\pi$。</p>
+<p><strong>情况D</strong>：类似于A，但有一个子载波旋转了 $+2\pi$。</p>
 </li>
 </ul>
 <p>从实验结果我们可以得出结论，测量到的RX相位偏移 $\hat{\varphi}$ 可能会围绕 $\varphi$ 旋转多个 $\pi$。此外，通过分析整个数据集我们发现，旋转是否发生以及旋转的角度严格取决于真实的 $\varphi$ 是正是负：
 $$
 \hat{\varphi} =
 \begin{cases}
-\varphi + n\pi, &amp; n \in {-2, -1, 0, 1}, \text{ if } \varphi &gt; 0 \
+\varphi + n\pi, &amp; n \in {-2, -1, 0, 1}, \text{ if } \varphi &gt; 0 \\
 \varphi + n\pi, &amp; n \in {-1, 0, 1, 2}, \text{ otherwise}
 \end{cases}
 $$
-<img src="../figure/CSI_Calibration/4.png" alt="image-20231128172615934"></p>
-<ul>
-<li>图3显示了WiFi NIC两个接收天线之间的中位数相位偏移，涵盖了2.4 GHz ISM频段的1-13频道，按子载波分。图中展示了消除了由电缆和分频器引入的相位偏移之后的相位偏移值。我们可以观察到接收天线的相位偏移接近零，并且略微依赖于频率。</li>
-</ul>
+<img src="/figure/CSI_Calibration/4.png" alt="image-20231128172615934"></p>
+<p>图3显示了 WiFi NIC 两个接收天线之间的中位数相位偏移，涵盖了2.4 GHz ISM频段的1-13频道，按子载波分。图中展示了消除了由电缆和分频器引入的相位偏移之后的相位偏移值。我们可以观察到接收天线的相位偏移接近零，并且略微依赖于频率。</p>
 <table>
 <thead>
 <tr>
@@ -526,36 +528,17 @@ $$
 </tr>
 </tbody>
 </table>
-<ul>
-<li>
 <p>上表总结了通过对子载波求平均后每个频道的相位偏移测量值。2.4 GHz频带中不同子载波之间的相位偏移差异小，即0.086 ≈ 5°。</p>
-</li>
-<li>
 <p>图4显示了有效相位偏移的分布，即那些没有随机相位偏移旋转的。我们看到一个狭窄的分布，即更多的数据接近平均值，标准偏差仅为0.0008 ≈ 0.05°。</p>
-</li>
-<li>
 <p>图5和图6展示了5 GHz频带中频道的值。我们可以看到较低的5 GHz频道的接收天线相位偏移在-0.3到-0.1之间，较高频道则在0.1到0.5之间。注意，这样的范围相当于45°。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>**校正算法：**通过大量的包进行平均以及去除离群值：</p>
-<ul>
-<li>
-<p>在2.4 GHz频段中，相邻的频道会相互重叠15 MHz，这意味着一个特定的频率（OFDM子载波）会被多个频道同时测量。为了利用这一点，我们在1到13号所有频道上发送数据包。为了进一步补偿随机相位旋转，我们在每个频道上发送N个数据包。这样我们就得到了对于特定子载波的接收天线相位偏移 $\hat{\varphi}_{t,c}(f)$ 的多次测量，其中 $f$ 是OFDM子载波，$t=1\dots N$是数据包的编号，而  是在$c\in C(f)$该子载波上重叠的频道集合。</p>
-</li>
-<li>
-<p>接下来，构建一个向量$\vec{\hat{\varphi}}<em>{t,c}=\left(\hat{\varphi}</em>{t,c}(0),\dots,\hat{\varphi}<em>{t,c}(N)\right)$，其中 $0\dots F$ 表示当结合13个频道时的子载波总数。然后我们过滤并替换异常值$\vec{\hat{\varphi}}</em>{t^*,c}=\text{filloutliers}(\vec{\hat{\varphi}}_{t,c})$。这里可以使用Matlab自带的 <code>filloutliers(x,'linear')</code> 函数</p>
-</li>
-<li>
-<p>接着对于特定子载波的接收天线相位偏移估计是通过计算中位数$\varphi^<em>(f)=\text{med}\left(\vec{\hat{\varphi}}_{t^</em>,c}\right), \ t=1\dots N,\ c\in C(f) $ 来完成。</p>
-</li>
-<li>
-<p>创建表示校正后相位偏移的最终向量为$\vec{\varphi}=\text{filloutliers}((\varphi^<em>(0),\dots,\varphi^</em>(F)))$</p>
-</li>
-</ul>
-</li>
-</ul>
+<h3 id="校正算法">校正算法</h3>
+<p>通过大量的包进行平均以及去除离群值：</p>
+<ol>
+<li>在 2.4 GHz 频段，相邻频道间存在 15 MHz 的重叠。利用此特性，在 1-13 号频道上发送数据包，并在每个频道上发送 N 个包以补偿随机相位旋转。通过这种方式，对特定 OFDM 子载波的接收天线相位偏移  $\hat{\varphi_{t,c}}(f)$ 进行多次测量，其中 $f$ 为 OFDM 子载波索引，$t = 1 \ldots N$为包编号，$c $ 属于频道集合 $C(f)$，即该子载波重叠的频道。</li>
+<li>然后，对于每个数据包编号 $t$ 和频道 $c$，构建相位偏移向量 $\vec{\hat{\varphi_{t,c}}}$ 包含$F+1$各元素$F$为合并的 13 个频道的子载波总数），并用 Matlab 的 <code>filloutliers</code> 函数处理异常值得到 $\vec{\hat{\varphi}}_{t^{\prime},c} $。</li>
+<li>特定子载波的相位偏移估计 $\varphi^{\prime}(f)$ 通过计算$\vec{\hat{\varphi}}_{t^{\prime},c}$的中位数得出，对所有包 $t$ 和频道集 $c$ 内的频道 $C(f)$ 都适用。</li>
+<li>最后，组合所有子载波的估计，形成校正后的相位偏移最终向量 $\vec{\varphi}$，同样使用 <code>filloutliers</code> 函数处理。</li>
+</ol>
 <h2 id="csi相位矫正的误差来源">CSI相位矫正的误差来源</h2>
 <blockquote>
 <p>内容来自《Calibrating Phase Offsets for Commodity WiFi》</p>
